@@ -1,0 +1,203 @@
+
+    <html>
+    <head>
+        <title>Cleanlab Analysis Report</title>
+        <style>
+            body { font-family: sans-serif; margin: 20px; }
+            .section { margin-bottom: 40px; }
+            .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+            .card { border: 1px solid #ccc; padding: 10px; border-radius: 5px; background: #f9f9f9; }
+            img { max-width: 100%; height: auto; border-radius: 3px; }
+            h2 { color: #333; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+            .highlight { color: #d9534f; font-weight: bold; }
+            .plot-container { text-align: center; margin-bottom: 30px; }
+            .plot-container img { max-width: 800px; border: 1px solid #eee; }
+        </style>
+    </head>
+    <body>
+        <h1>Cleanlab Analysis Report</h1>
+        
+        <div class="section">
+            <h2>Feature Visualization (t-SNE)</h2>
+            <p>2D projection of DINOv2 embeddings. Points are colored by their <strong>given label</strong>.</p>
+            <div class="plot-container">
+                <img src="tsne.png" alt="t-SNE Plot">
+            </div>
+        </div>
+    
+    <div class="section">
+        <h2>Top Potential Label Errors</h2>
+        <p>Images where the given label likely contradicts the content.</p>
+        <div class="grid">
+    
+        <div class="card">
+            <img src="dataset_cleaned\Nofire\non_fire.20.png" alt="Image 7">
+            <p><strong>File:</strong> non_fire.20.png</p>
+            <p><strong>Given:</strong> Nofire</p>
+            <p><strong>Predicted:</strong> fire (1.00)</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\Nofire\non_fire.76.png" alt="Image 74">
+            <p><strong>File:</strong> non_fire.76.png</p>
+            <p><strong>Given:</strong> Nofire</p>
+            <p><strong>Predicted:</strong> fire (1.00)</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\fire\fire.667.png" alt="Image 318">
+            <p><strong>File:</strong> fire.667.png</p>
+            <p><strong>Given:</strong> fire</p>
+            <p><strong>Predicted:</strong> Nofire (1.00)</p>
+        </div>
+        </div></div>
+    <div class="section">
+        <h2>Top Outliers (Out-of-Distribution)</h2>
+        <p>Images with the lowest confidence scores (most anomalous).</p>
+        <div class="grid">
+    
+        <div class="card">
+            <img src="dataset_cleaned\dog\9986.jpg" alt="Image 285">
+            <p><strong>File:</strong> 9986.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1381</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\984.jpg" alt="Image 224">
+            <p><strong>File:</strong> 984.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1510</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9981.jpg" alt="Image 280">
+            <p><strong>File:</strong> 9981.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1612</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9956.jpg" alt="Image 252">
+            <p><strong>File:</strong> 9956.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1648</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9839.jpg" alt="Image 223">
+            <p><strong>File:</strong> 9839.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1692</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9985.jpg" alt="Image 284">
+            <p><strong>File:</strong> 9985.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1718</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\cat\9954.jpg" alt="Image 169">
+            <p><strong>File:</strong> 9954.jpg</p>
+            <p><strong>Class:</strong> cat</p>
+            <p><strong>OOD Score:</strong> 0.1788</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\995.jpg" alt="Image 245">
+            <p><strong>File:</strong> 995.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1800</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9824.jpg" alt="Image 207">
+            <p><strong>File:</strong> 9824.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1803</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9840.jpg" alt="Image 225">
+            <p><strong>File:</strong> 9840.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1838</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9973.jpg" alt="Image 271">
+            <p><strong>File:</strong> 9973.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1840</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9950.jpg" alt="Image 246">
+            <p><strong>File:</strong> 9950.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1841</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\Nofire\non_fire.71.png" alt="Image 69">
+            <p><strong>File:</strong> non_fire.71.png</p>
+            <p><strong>Class:</strong> Nofire</p>
+            <p><strong>OOD Score:</strong> 0.1841</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9999.jpg" alt="Image 299">
+            <p><strong>File:</strong> 9999.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1870</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\fire\fire.651.png" alt="Image 301">
+            <p><strong>File:</strong> fire.651.png</p>
+            <p><strong>Class:</strong> fire</p>
+            <p><strong>OOD Score:</strong> 0.1875</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9826.jpg" alt="Image 209">
+            <p><strong>File:</strong> 9826.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1903</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9953.jpg" alt="Image 249">
+            <p><strong>File:</strong> 9953.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1938</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9965.jpg" alt="Image 262">
+            <p><strong>File:</strong> 9965.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1942</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9822.jpg" alt="Image 205">
+            <p><strong>File:</strong> 9822.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1943</p>
+        </div>
+        
+        <div class="card">
+            <img src="dataset_cleaned\dog\9820.jpg" alt="Image 203">
+            <p><strong>File:</strong> 9820.jpg</p>
+            <p><strong>Class:</strong> dog</p>
+            <p><strong>OOD Score:</strong> 0.1958</p>
+        </div>
+        
+        </div>
+    </div>
+    </body>
+    </html>
+    
