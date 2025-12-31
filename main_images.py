@@ -154,7 +154,7 @@ def interactive_fix(dataset, issue_indices, pred_probs, labels):
     return app.changes_count
 
 # Configuration
-SOURCE_DATA_DIR = "dataset"  # Original read-only source
+SOURCE_DATA_DIR = "../dataset"  # Original read-only source
 WORK_DIR = "dataset_cleaned" # Working copy
 BATCH_SIZE = 32
 

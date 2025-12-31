@@ -11,7 +11,7 @@ from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 
 # Configuration
-DATA_DIR = "dataset"
+DATA_DIR = "dataset_cleaned"
 BATCH_SIZE = 32
 OUTPUT_FILE = "tsne.png"
 
