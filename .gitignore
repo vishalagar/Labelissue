@@ -1,0 +1,11 @@
+# Generated Data
+dataset_cleaned/
+report.html
+tsne.png
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
