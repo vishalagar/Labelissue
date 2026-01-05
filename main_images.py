@@ -24,6 +24,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import onnxruntime as ort
 
 class CorrectorPanel(ttk.Frame):
     def __init__(self, parent, dataset, issues, pred_probs, labels):
@@ -393,6 +394,42 @@ def get_cnn_model(num_classes, device):
     model = model.to(device)
     return model
 
+    model = model.to(device)
+    return model
+
+def get_onnx_probs(onnx_path, dataset, batch_size=32):
+    print(f"\nRunning Inference using ONNX Model: {onnx_path}")
+    print("Note: This is pure inference. No re-training will occur.")
+    
+    # Initialize ONNX Session
+    ort_session = ort.InferenceSession(onnx_path)
+    input_name = ort_session.get_inputs()[0].name
+    
+    # Prepare DataLoader
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
+    
+    all_probs = []
+    
+    for inputs, _ in dataloader:
+        # ONNX expects numpy inputs
+        ort_inputs = {input_name: inputs.numpy()}
+        ort_outs = ort_session.run(None, ort_inputs)
+        
+        # Assuming output 0 is logits/probabilities
+        outputs = ort_outs[0]
+        
+        # Apply Softmax if model outputs logits (heuristic: if sum != 1)
+        # We'll just apply softmax to be safe if values aren't probs
+        # Or check constraints. For now, assume logits.
+        
+        # Simple torch-like softmax on numpy
+        exp_x = np.exp(outputs - np.max(outputs, axis=1, keepdims=True))
+        probs = exp_x / np.sum(exp_x, axis=1, keepdims=True)
+        
+        all_probs.append(probs)
+        
+    return np.concatenate(all_probs, axis=0)
+
 def get_cnn_probs(dataset, num_classes, batch_size=32, num_epochs=10, k=5):
     print(f"\nStarting {k}-Fold Cross-Validation with ResNet50...")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -585,9 +622,16 @@ def main():
     visualize_features(features, labels, dataset.classes, filename='tsne.png')
 
     # 3. Train Classifier & Get Probabilities
-    print("\nTraining classifier (ResNet50) on images...")
-    # Using ResNet50 with Cross Validation to get clean probabilities
-    pred_probs = get_cnn_probs(dataset, num_classes=len(dataset.classes), batch_size=BATCH_SIZE, num_epochs=5, k=5)
+    if CUSTOM_WEIGHTS_PATH.endswith('.onnx'):
+        if os.path.exists(CUSTOM_WEIGHTS_PATH):
+             pred_probs = get_onnx_probs(CUSTOM_WEIGHTS_PATH, dataset, batch_size=BATCH_SIZE)
+        else:
+             print(f"Error: ONNX file '{CUSTOM_WEIGHTS_PATH}' not found.")
+             return
+    else:
+        print("\nTraining classifier (ResNet50) on images (or loading .pth weights)...")
+        # Using ResNet50 with Cross Validation to get clean probabilities
+        pred_probs = get_cnn_probs(dataset, num_classes=len(dataset.classes), batch_size=BATCH_SIZE, num_epochs=5, k=5)
     
     # 4. Find Label Issues
     print("\nDetecting label issues with Cleanlab...")
@@ -611,8 +655,12 @@ def main():
         # [Existing logic follows]
          
         # Re-train and Re-predict (using updated labels)
-        print("Re-training classifier with updated labels...")
-        pred_probs = get_cnn_probs(dataset, num_classes=len(dataset.classes), batch_size=BATCH_SIZE, num_epochs=5, k=5)
+        if CUSTOM_WEIGHTS_PATH.endswith('.onnx'):
+             print("Re-running ONNX inference...")
+             pred_probs = get_onnx_probs(CUSTOM_WEIGHTS_PATH, dataset, batch_size=BATCH_SIZE)
+        else:
+            print("Re-training classifier with updated labels...")
+            pred_probs = get_cnn_probs(dataset, num_classes=len(dataset.classes), batch_size=BATCH_SIZE, num_epochs=5, k=5)
         
         # Re-find issues
         print("Detecting label issues (Pass 2)...")
